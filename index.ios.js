@@ -46,12 +46,20 @@ var StopWatch = React.createClass({
 
   stopButton: function(){
     return (
-      <TouchableHighlight style={[styles.button, {borderColor: 'red'}]} onPress={this.handleStopPress}><Text>Stop</Text></TouchableHighlight>
+      <TouchableHighlight style={[styles.button, {borderColor: 'red'}]} underlayColor="gray" onPress={this.handleStopPress}><Text>Stop</Text></TouchableHighlight>
     );
   },
 
   handleStopPress: function(){
-    console.log('stop')
+
+    clearInterval(this.interval);
+    if(this.state.isRunning || this.state.isPaused){
+      this.setState({
+        isRunning: false,
+        isPaused: false,
+        timeElapsed: new Date() - this.state.totalPause - this.state.startTime
+      });
+    }
   },
 
   startPauseStyle: function(){
@@ -114,7 +122,7 @@ var StopWatch = React.createClass({
       var lapTime = this.state.timeElapsed - this.state.lastLapTime;
 
       this.setState({
-        lastLapTime: lapTime,
+        lastLapTime: this.state.timeElapsed,
         laps: this.state.laps.concat([lapTime])
       });
     }
