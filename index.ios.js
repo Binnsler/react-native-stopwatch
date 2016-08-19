@@ -142,6 +142,7 @@ var StopWatch = React.createClass({
   }
 });
 
+// STYLES
 var styles = StyleSheet.create({
   container: {
     flex: 1,
