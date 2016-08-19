@@ -26,8 +26,8 @@ var StopWatch = React.createClass({
             <Text style={styles.timer}>{MinSecMilli(this.state.timeElapsed)}</Text>
           </View>
           <View style={[styles.buttonWrapper]}>
-            {this.startPauseButton()}
             {this.stopButton()}
+            {this.startPauseButton()}
             {this.lapButton()}
           </View>
         </View>
@@ -41,34 +41,6 @@ var StopWatch = React.createClass({
   startPauseButton: function(){
     return (
       <TouchableHighlight style={[styles.button, this.startPauseStyle()]} underlayColor="gray" onPress={this.handleStartPress}><Text>{this.state.isRunning ? 'Pause' : 'Start'}</Text></TouchableHighlight>
-    );
-  },
-
-  stopButton: function(){
-    return (
-      <TouchableHighlight style={[styles.button, {borderColor: 'red'}]} underlayColor="gray" onPress={this.handleStopPress}><Text>Stop</Text></TouchableHighlight>
-    );
-  },
-
-  handleStopPress: function(){
-
-    clearInterval(this.interval);
-    if(this.state.isRunning || this.state.isPaused){
-      this.setState({
-        isRunning: false,
-        isPaused: false,
-        timeElapsed: new Date() - this.state.totalPause - this.state.startTime
-      });
-    }
-  },
-
-  startPauseStyle: function(){
-    return this.state.isRunning ? {borderColor: 'blue'} : {borderColor: 'green'}
-  },
-
-  lapButton: function(){
-    return (
-      <TouchableHighlight style={styles.button} underlayColor="gray" onPress={this.handleLapPress}><Text>Lap</Text></TouchableHighlight>
     );
   },
 
@@ -99,7 +71,7 @@ var StopWatch = React.createClass({
           isPaused: false,
           timeElapsed: new Date() - this.state.totalPause - this.state.startTime
         });
-      }.bind(this), 30)
+      }.bind(this), 60)
     }
 
     else {
@@ -112,9 +84,37 @@ var StopWatch = React.createClass({
           timeElapsed: new Date() - this.state.startTime,
           isRunning: true
         });
-      }.bind(this), 30);
+      }.bind(this), 60);
     }
   },
+
+  stopButton: function(){
+    return (
+      <TouchableHighlight style={[styles.button, {borderColor: 'red'}]} underlayColor="gray" onPress={this.handleStopPress}><Text>Stop</Text></TouchableHighlight>
+    );
+  },
+
+  handleStopPress: function(){
+
+    clearInterval(this.interval);
+    if(this.state.isRunning || this.state.isPaused){
+      this.setState({
+        isRunning: false,
+        isPaused: false
+      });
+    }
+  },
+
+  startPauseStyle: function(){
+    return this.state.isRunning ? {borderColor: 'blue'} : {borderColor: 'green'}
+  },
+
+  lapButton: function(){
+    return (
+      <TouchableHighlight style={styles.button} underlayColor="gray" onPress={this.handleLapPress}><Text>Lap</Text></TouchableHighlight>
+    );
+  },
+
 
   handleLapPress: function(){
 
@@ -171,7 +171,8 @@ var styles = StyleSheet.create({
   },
 
   timer: {
-    fontSize: 60
+    fontSize: 60,
+    textAlign: 'right'
   },
 
   button: {
